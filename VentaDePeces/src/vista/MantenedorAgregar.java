@@ -197,45 +197,41 @@ public class MantenedorAgregar extends javax.swing.JFrame {
 
     private void jButtonAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAgregarActionPerformed
         // TODO add your handling code here:
-        String idPez, color = "";
-        int precio, atributo, stock;
+        String idPez,color="";
+        int precio,atributo,stock;
+        
+        
         idPez = jTextFieldID.getText();
         precio = Integer.parseInt(jTextFieldPrecio.getText());
         stock = Integer.parseInt(jTextFieldStock.getText());
-
+        
         Pez pez = null;
-        if (jRadioButtonPezDorado.isSelected()) {
-            String especie = "Pez Dorado";
+        if(jRadioButtonPezDorado.isSelected()==true){
+            String especie="Pez Dorado";
             atributo = Integer.parseInt(jTextFieldAtributo.getText());
-            pez = new PezDorado(idPez, especie, precio, atributo, stock); 
+            pez = new PezDorado(idPez,especie,precio,atributo,stock);
         }
-        if (jRadioButtonPezKoi.isSelected()) {
-            String especie = "Pez Koi";
+        
+        if(jRadioButtonPezKoi.isSelected()==true){
+            String especie="Pez Koi";
             atributo = Integer.parseInt(jTextFieldAtributo.getText());
-            pez = new PezKoi(idPez, especie, precio, atributo, stock);  
+            pez = new PezKoi(idPez,especie,precio,atributo,stock);
         }
-        if (jRadioButtonPezTropical.isSelected()) {
-            String especie = "Pez Tropical";
-            color = jTextFieldAtributo.getText();  
-            pez = new PezTropical(idPez, color, especie, precio, stock);  
+        
+        if(jRadioButtonPezTropical.isSelected()==true){
+            String especie="Pez Tropical";
+            color = jTextFieldAtributo.getText();
+            pez = new PezTropical(idPez,color,especie,precio,stock);
         }
-
-
-        if (pez != null) {
-            try {
-                if (PezDAO.agregar(pez)) {
-                    jTextAreaVisor.setText("Bien, datos agregados");
-                } else {
-                    jTextAreaVisor.setText("Error, datos NO agregados");
-                }
-            } catch (Exception e) {
-                jTextAreaVisor.setText("Error al agregar pez: " + e.getMessage());
-            }
-        } else {
-            jTextAreaVisor.setText("Error, por favor seleccione un tipo de pez.");
-    }
-
-    limpiar();
+        
+        
+        if (PezDAO.agregar(pez)== true){
+            jTextAreaVisor.setText("Bien, datos agregados");
+        }else{
+            jTextAreaVisor.setText("Error, datos NO agregados");
+        }
+        
+        limpiar();
     }//GEN-LAST:event_jButtonAgregarActionPerformed
 
     private void jTextFieldAtributoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldAtributoActionPerformed
