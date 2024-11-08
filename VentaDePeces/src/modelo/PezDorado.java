@@ -14,8 +14,9 @@ import modelo.Pez;
 public class PezDorado extends Pez{
     private int tamaño; //Puede llegar a medir 140 cm
     
-    public PezDorado(String idPez, String especie, int precio, int tamaño, int stock){
-        super(idPez,especie,precio,stock);
+    public PezDorado(String idPez, String especie, int precio, int tamaño,
+            int stock, String urlImg){
+        super(idPez,especie,precio,stock, urlImg);
         this.tamaño = tamaño;
     }
 

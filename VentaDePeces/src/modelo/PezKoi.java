@@ -14,8 +14,9 @@ import modelo.Pez;
 public class PezKoi extends Pez{
     private int edad; //Tiene una esperanza de vida de entre 25 a 35 años
     
-    public PezKoi(String idPez,String especie, int precio, int edad, int stock){
-        super(idPez,especie,precio,stock);
+    public PezKoi(String idPez,String especie, int precio, int edad,
+            int stock, String urlImg){
+        super(idPez,especie,precio,stock, urlImg);
         this.edad = edad;
     }
 

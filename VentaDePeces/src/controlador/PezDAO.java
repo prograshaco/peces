@@ -4,147 +4,179 @@
  * and open the template in the editor.
  */
 package controlador;
-
-import java.util.ArrayList;
 import modelo.*;
+import java.sql.Connection;
+import java.sql.Date;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
 /**
  *
  * @author javie
  */
 public class PezDAO {
-    private static ArrayList<Pez> peces=new ArrayList();
-    
-    public static boolean agregar(Pez pez){
-        boolean estado=false;
-        
-        if(pez != null && buscar(pez.getIdPez())==null){
-            peces.add(pez);
-            estado=true;
+    public static boolean agregar(Pez pez) throws Exception {
+        boolean estado = false;
+        String query = "INSERT INTO productos(id_producto, color, tamaño, edad, especie, precio, stock, img) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+
+        try (Connection con = new AbrirBaseDeDatos().conectar("tienda_peces");
+             PreparedStatement pst = con.prepareStatement(query)) {
+            pst.setString(1, pez.getIdPez());
+            // Configurar Color (Solo para PezTropical)
+            if (pez instanceof PezTropical) {
+                pst.setString(2, ((PezTropical) pez).getColor());
+            } else {
+                pst.setNull(2, java.sql.Types.VARCHAR);
+            }// Configurar Tamaño (solo para PezDorado)
+            if (pez instanceof PezDorado) {
+                pst.setInt(3, ((PezDorado) pez).getTamaño());
+            } else {
+                pst.setNull(3, java.sql.Types.INTEGER); 
+            }// Configurar Edad (solo para PezKoi)
+            if (pez instanceof PezKoi) {
+                pst.setInt(4, ((PezKoi) pez).getEdad());
+            } else {
+                pst.setNull(4, java.sql.Types.INTEGER); 
+            }
+            pst.setString(5, pez.getEspecie());
+            pst.setDouble(6, pez.getPrecio());
+            pst.setInt(7, pez.getStock());
+            if (pez.getUrlImg() != null) {
+                pst.setString(8, pez.getUrlImg());  
+            } else {
+                pst.setNull(8, java.sql.Types.VARCHAR);  
+            }
+            estado = pst.executeUpdate() == 1;
+        } catch (SQLException sqle) {
+            System.out.println("Error al agregar pez: " + sqle.getMessage());
         }
         return estado;
     }
     
-    public static Pez buscar(String idPez){
+    
+    // Metodo para Buscar un Producto por su id_producto
+    
+    public static Pez buscar(String id_pez) {
         Pez pez = null;
-        for(Pez obj : peces){
-            if(obj.getIdPez().equals(idPez)){
-            pez=obj;
-            break;
+        String query = "SELECT * FROM productos WHERE id_producto = ?";
+        try (Connection con = new AbrirBaseDeDatos().conectar("tienda_peces");
+            PreparedStatement pst = con.prepareStatement(query)) {
+            pst.setString(1, id_pez);
+            try (ResultSet rs = pst.executeQuery()) {
+                if (rs.next()) {
+                    String especie = rs.getString("especie");
+                    if("Tropical".equals(especie)){
+                        pez = new PezTropical(
+                                rs.getString("id_producto"),
+                                rs.getString("color"),
+                                rs.getString("especie"),
+                                rs.getInt("precio"),
+                                rs.getInt("stock"),
+                                rs.getString("img")
+                        );
+                    }else if("Pez Dorado".equals(especie)){
+                        pez = new PezDorado(
+                                rs.getString("id_producto"),
+                                rs.getString("especie"),
+                                rs.getInt("precio"),
+                                rs.getInt("tamaño"),
+                                rs.getInt("stock"),
+                                rs.getString("img")
+                        );
+                    }else if("Pez Koi".equals(especie)){
+                        pez = new PezKoi(
+                                rs.getString("id_producto"),
+                                rs.getString("especie"),
+                                rs.getInt("precio"),
+                                rs.getInt("edad"),
+                                rs.getInt("stock"),
+                                rs.getString("img")
+                        );  
+                    }   
+                }
             }
+
+        } catch (SQLException sqle) {
+            System.out.println("Error al buscar el pez: " + sqle.getMessage());
+        } catch (Exception e) {
+            System.out.println("Error inesperado: " + e.getMessage());
         }
         return pez;
     }
-    
-    public static boolean eliminar(String idPez){
-        boolean estado=false;
-        for(Pez obj : peces){
-            if(obj.getIdPez().equals(idPez)){
-                peces.remove(obj);
-                estado=true;
-                break;
-            }
+
+    public static boolean eliminar(String id_pez) throws Exception {
+        boolean estado = false;
+        
+        String query = "DELETE FROM productos WHERE id_producto = ?";
+        
+        try (Connection con = new AbrirBaseDeDatos().conectar("tienda_peces");
+             PreparedStatement pst = con.prepareStatement(query)) {
+
+            pst.setString(1, id_pez);
+            estado = pst.executeUpdate() == 1;
+
+        } catch (SQLException sqle) {
+            System.out.println("Error al eliminar el producto: "+ sqle.getMessage());
         }
         return estado;
     }
     
-    public static boolean modificar(Pez pez){
-        boolean estado=false;
-        int pos=0;
-        for(Pez obj : peces){
-            if(obj.getIdPez().equals(pez.getIdPez())){
-                peces.set(pos,pez);
-                estado=true;
-                break;
+    
+    public static boolean modificar(Pez pez) throws Exception {
+        boolean estado = false;
+
+        
+        String query = "UPDATE productos SET color = ?, tamaño = ?, edad = ?,"
+        + " especie = ?, precio = ?, stock = ?, img = ? WHERE id_producto = ?";
+
+
+        try (Connection con = new AbrirBaseDeDatos().conectar("tienda_peces");
+             PreparedStatement pst = con.prepareStatement(query)) {
+            String color = null;
+            Integer tamaño = null;
+            Integer edad = null;
+            if (pez instanceof PezKoi) {
+                PezKoi pezKoi = (PezKoi) pez;
+                edad = pezKoi.getEdad(); // atributo de PezKoi
+            } else if (pez instanceof PezTropical) {
+                PezTropical pezTropical = (PezTropical) pez;
+                color = pezTropical.getColor();  // atributo de PezTropical
+            } else if (pez instanceof PezDorado) {
+                PezDorado pezDorado = (PezDorado) pez;
+                tamaño = pezDorado.getTamaño();
             }
-            pos++;
+            if(color != null){
+                pst.setString(1,color);
+            }else{
+                 pst.setNull(1, java.sql.Types.INTEGER);
+            }
+            if(tamaño != null){
+                pst.setInt(2,tamaño);
+            }else{
+                 pst.setNull(2, java.sql.Types.INTEGER);
+            }
+            if (edad != null) {
+                pst.setInt(3, edad);
+            } else {
+                pst.setNull(3, java.sql.Types.INTEGER);
+            }
+            
+            pst.setString(4, pez.getEspecie());
+            pst.setInt(5, pez.getPrecio());
+            pst.setInt(6, pez.getStock());
+            pst.setString(7, pez.getUrlImg());
+            pst.setString(8, pez.getIdPez());
+
+            // se actualiza o se supone xd
+            estado = pst.executeUpdate() == 1;
+
+        } catch (SQLException sqle) {
+            System.out.println("Error al modificar pez: " + sqle.getMessage());
         }
         return estado;
     }
+
+
     
-    public static ArrayList<Pez> obtenerDatos(){
-        return peces;
-    }
-    
-    public static ArrayList<Pez> obtenerPezTropical(){
-        ArrayList<Pez> reportes = new ArrayList();
-        
-        for(Pez obj : peces){
-            if(obj instanceof PezTropical){
-                reportes.add(obj);
-            }
-        }
-        return reportes;
-    }
-    
-    public static ArrayList<Pez> obtenerPezDorado(){
-        ArrayList<Pez> reportes = new ArrayList();
-        
-        for(Pez obj : peces){
-            if(obj instanceof PezDorado){
-                reportes.add(obj);
-            }
-        }
-        return reportes;
-    }
-    
-    public static ArrayList<Pez> obtenerPezKoi(){
-        ArrayList<Pez> reportes = new ArrayList();
-        
-        for(Pez obj : peces){
-            if(obj instanceof PezKoi){
-                reportes.add(obj);
-            }
-        }
-        return reportes;
-    }
-    
-    public static Pez buscarPezTropical(String idPez){
-        Pez reportes = null;
-        
-        for(Pez obj : peces){
-            if(obj instanceof PezTropical){
-                if(obj.getIdPez().equals(idPez)){
-                    reportes =obj;
-                    break;
-                }
-            }
-        }
-        return reportes;
-    }
-    
-    public static Pez buscarPezDorado(String idPez){
-        Pez reportes = null;
-        
-        for(Pez obj : peces){
-            if(obj instanceof PezDorado){
-                if(obj.getIdPez().equals(idPez)){
-                    reportes =obj;
-                    break;
-                }
-            }
-        }
-        return reportes;
-    }
-    
-    public static Pez buscarPezKoi(String idPez){
-        Pez reportes = null;
-        
-        for(Pez obj : peces){
-            if(obj instanceof PezKoi){
-                if(obj.getIdPez().equals(idPez)){
-                    reportes =obj;
-                    break;
-                }
-            }
-        }
-        return reportes;
-    }
-    
-    public static void llenar(){
-        agregar(new PezTropical("aa01","Amarillo","Tropical",(int)15000,(int)74));
-        agregar(new PezTropical("aa02","Rojo","Tropical",(int)17000,(int)29));
-        agregar(new PezDorado("ab01","Dorado",(int)20000,(int)75,(int)65));
-        agregar(new PezDorado("ab02","Dorado",(int)15250,(int)45,(int)38));
-        agregar(new PezKoi("ac01","Koi",(int)14250,(int)21,(int)88));
-    }
 }

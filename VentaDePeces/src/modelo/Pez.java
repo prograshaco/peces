@@ -8,19 +8,23 @@ package modelo;
  *
  * @author javie
  */
-public abstract class Pez implements ICalculable {
+public class Pez{
     private String idPez;
     private String especie;
     protected int precio;
     protected int stock;
+    private String urlImg;
     
-    public Pez(String idPez, String especie, int precio, int stock){
+    public Pez(String idPez, String especie, int precio, int stock, String urlImg){
         this.idPez = idPez;
         this.especie = especie;
         this.precio = precio;
         this.stock = stock;
+        this.urlImg = urlImg;
     }
 
+ 
+        
     public String getIdPez() {
         return idPez;
     }
@@ -53,10 +57,18 @@ public abstract class Pez implements ICalculable {
         this.stock = stock;
     }
 
+    public String getUrlImg() {
+        return urlImg;
+    }
+
+    public void setUrlImg(String urlImg) {
+        this.urlImg = urlImg;
+    }
+    
     @Override
     public String toString() {
         return idPez+", "+especie+", "+precio+", "+stock;
     }
     
-    public abstract void informacion();
+    
 }

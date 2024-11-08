@@ -52,6 +52,9 @@ public class TestDAO {
         System.out.println("-------------------------------------------------");
         System.out.println("");
         
+        
+        
+        
         if(PezDAO.agregar(t)==true){
             System.out.println("Bien, datos agregados");
         }else{

@@ -12,8 +12,8 @@ public class PezTropical extends Pez {
     private String color;
     
     public PezTropical(String idPez,String color, String especie, int precio, 
-            int stock){
-        super(idPez,especie,precio,stock);
+            int stock, String urlImg){
+        super(idPez,especie,precio,stock, urlImg);
         this.color = color;
     }
 
