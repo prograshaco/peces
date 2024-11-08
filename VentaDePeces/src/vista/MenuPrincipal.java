@@ -32,27 +32,26 @@ public class MenuPrincipal extends javax.swing.JFrame {
         jMenuItem1 = new javax.swing.JMenuItem();
         jMenuItem2 = new javax.swing.JMenuItem();
         jMenuItem3 = new javax.swing.JMenuItem();
+        jLabel1 = new javax.swing.JLabel();
         jButtonSalir = new javax.swing.JButton();
         jLabelVersion = new javax.swing.JLabel();
         jLabelTitulo = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
-        jMenu2 = new javax.swing.JMenu();
-        jMenuItemComprar = new javax.swing.JMenuItem();
+        jMenu1 = new javax.swing.JMenu();
+        jMenuItemBuscar = new javax.swing.JMenuItem();
         jMenuReportes = new javax.swing.JMenu();
         jMenuItemGeneralVentas = new javax.swing.JMenuItem();
         jMenuItemVentasEspecie = new javax.swing.JMenuItem();
-        jMenu1 = new javax.swing.JMenu();
-        jMenuItemBuscar = new javax.swing.JMenuItem();
-        jMenuItemAgregar = new javax.swing.JMenuItem();
-        jMenuItemEliminar = new javax.swing.JMenuItem();
-        jMenuItemModificar = new javax.swing.JMenuItem();
-        jMenuItemListar = new javax.swing.JMenuItem();
+        jMenu2 = new javax.swing.JMenu();
+        jMenuItemComprar = new javax.swing.JMenuItem();
 
         jMenuItem1.setText("jMenuItem1");
 
         jMenuItem2.setText("jMenuItem2");
 
         jMenuItem3.setText("jMenuItem3");
+
+        jLabel1.setText("jLabel1");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -68,12 +67,17 @@ public class MenuPrincipal extends javax.swing.JFrame {
         jLabelTitulo.setFont(new java.awt.Font("Tahoma", 3, 18)); // NOI18N
         jLabelTitulo.setText("Venta de peces");
 
-        jMenu2.setText("Comprar");
+        jMenu1.setText("Mantenedores");
 
-        jMenuItemComprar.setText("Realizar compra");
-        jMenu2.add(jMenuItemComprar);
+        jMenuItemBuscar.setText("Peces");
+        jMenuItemBuscar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemBuscarActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jMenuItemBuscar);
 
-        jMenuBar1.add(jMenu2);
+        jMenuBar1.add(jMenu1);
 
         jMenuReportes.setText("Reportes");
 
@@ -90,39 +94,12 @@ public class MenuPrincipal extends javax.swing.JFrame {
 
         jMenuBar1.add(jMenuReportes);
 
-        jMenu1.setText("Mantenedores");
+        jMenu2.setText("Comprar");
 
-        jMenuItemBuscar.setText("Buscar ID");
-        jMenuItemBuscar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItemBuscarActionPerformed(evt);
-            }
-        });
-        jMenu1.add(jMenuItemBuscar);
+        jMenuItemComprar.setText("Realizar compra");
+        jMenu2.add(jMenuItemComprar);
 
-        jMenuItemAgregar.setText("Agregar");
-        jMenuItemAgregar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItemAgregarActionPerformed(evt);
-            }
-        });
-        jMenu1.add(jMenuItemAgregar);
-
-        jMenuItemEliminar.setText("Eliminar");
-        jMenu1.add(jMenuItemEliminar);
-
-        jMenuItemModificar.setText("Modificar");
-        jMenu1.add(jMenuItemModificar);
-
-        jMenuItemListar.setText("Listar");
-        jMenuItemListar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItemListarActionPerformed(evt);
-            }
-        });
-        jMenu1.add(jMenuItemListar);
-
-        jMenuBar1.add(jMenu1);
+        jMenuBar1.add(jMenu2);
 
         setJMenuBar(jMenuBar1);
 
@@ -169,18 +146,8 @@ public class MenuPrincipal extends javax.swing.JFrame {
 
     private void jMenuItemBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemBuscarActionPerformed
         // TODO add your handling code here:
-        new MantenedorBuscar().setVisible(true);
+        new Mantenedores().setVisible(true);
     }//GEN-LAST:event_jMenuItemBuscarActionPerformed
-
-    private void jMenuItemAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemAgregarActionPerformed
-        // TODO add your handling code here:
-        new MantenedorAgregar().setVisible(true);
-    }//GEN-LAST:event_jMenuItemAgregarActionPerformed
-
-    private void jMenuItemListarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemListarActionPerformed
-        // TODO add your handling code here:
-        new MantenedorListar().setVisible(true);
-    }//GEN-LAST:event_jMenuItemListarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -219,6 +186,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonSalir;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabelTitulo;
     private javax.swing.JLabel jLabelVersion;
     private javax.swing.JMenu jMenu1;
@@ -227,13 +195,9 @@ public class MenuPrincipal extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
-    private javax.swing.JMenuItem jMenuItemAgregar;
     private javax.swing.JMenuItem jMenuItemBuscar;
     private javax.swing.JMenuItem jMenuItemComprar;
-    private javax.swing.JMenuItem jMenuItemEliminar;
     private javax.swing.JMenuItem jMenuItemGeneralVentas;
-    private javax.swing.JMenuItem jMenuItemListar;
-    private javax.swing.JMenuItem jMenuItemModificar;
     private javax.swing.JMenuItem jMenuItemVentasEspecie;
     private javax.swing.JMenu jMenuReportes;
     // End of variables declaration//GEN-END:variables
