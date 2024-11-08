@@ -3,10 +3,9 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/javie/Desktop/Java/VentaDePeces/src/vista/ReportePeces.java</file>
-            <file>file:/C:/Users/javie/Desktop/Java/VentaDePeces/src/vista/Mantenedores.java</file>
-            <file>file:/C:/Users/javie/Desktop/Java/VentaDePeces/src/vista/MantenedorAgregar.java</file>
-            <file>file:/C:/Users/javie/Desktop/Java/VentaDePeces/src/vista/MenuPrincipal.java</file>
+            <file>file:/C:/Users/jassa/Desktop/peces-main%20(1)/peces-main/VentaDePeces/src/modelo/PezKoi.java</file>
+            <file>file:/C:/Users/jassa/Desktop/peces-main%20(1)/peces-main/VentaDePeces/src/ventadepeces/TestBasesDAO.java</file>
+            <file>file:/C:/Users/jassa/Desktop/peces-main%20(1)/peces-main/VentaDePeces/src/controlador/PezDAO.java</file>
         </group>
     </open-files>
 </project-private>
