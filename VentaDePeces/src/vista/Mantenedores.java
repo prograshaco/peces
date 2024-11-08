@@ -19,7 +19,7 @@ public class Mantenedores extends javax.swing.JFrame {
      */
     public Mantenedores() {
         initComponents();
-        PezDAO.llenar();
+        
     }
 
     /**
@@ -249,7 +249,7 @@ public class Mantenedores extends javax.swing.JFrame {
     
     private void jButtonAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAgregarActionPerformed
         // TODO add your handling code here:
-        String idPez,color="";
+        String idPez,color,urlImg="";
         int precio,atributo,stock;
         /*
         Atributo, color y especie se definen dentro de los if de selección
@@ -266,7 +266,7 @@ public class Mantenedores extends javax.swing.JFrame {
                 if(jRadioButtonTropical.isSelected()==true){
                     String especie="Tropical";
                     color = jTextFieldAtributo.getText();
-                    Pez pez = new PezTropical(idPez,especie,color,precio,stock);
+                    Pez pez = new PezTropical(idPez,color,especie,precio,stock,urlImg);
                     
                     if(PezDAO.agregar(pez) == true){
                     JOptionPane.showMessageDialog(rootPane, "Datos agregados exitosamente");
@@ -278,7 +278,7 @@ public class Mantenedores extends javax.swing.JFrame {
                 if(jRadioButtonDorado.isSelected()==true){
                     String especie="Dorado";
                     atributo = Integer.parseInt(jTextFieldAtributo.getText());
-                    Pez pez = new PezDorado(idPez,especie,precio,atributo,stock);
+                    Pez pez = new PezDorado(idPez,especie,precio,atributo,stock,urlImg);
                     
                     if(PezDAO.agregar(pez) == true){
                         JOptionPane.showMessageDialog(rootPane, "Datos agregados exitosamente");
@@ -290,7 +290,7 @@ public class Mantenedores extends javax.swing.JFrame {
                 if(jRadioButtonKoi.isSelected()==true){
                     String especie="Koi";
                     atributo = Integer.parseInt(jTextFieldAtributo.getText());
-                    Pez pez = new PezKoi(idPez,especie,precio,atributo,stock);
+                    Pez pez = new PezKoi(idPez,especie,precio,atributo,stock,urlImg);
                     
                     if(PezDAO.agregar(pez) == true){
                         JOptionPane.showMessageDialog(rootPane, "Datos agregados exitosamente");
@@ -313,16 +313,16 @@ public class Mantenedores extends javax.swing.JFrame {
     private void jButtonListarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonListarActionPerformed
         // TODO add your handling code here:
         
-        String lista = "";
+        /*String lista = "";
         jTextAreaVisor.setText("");
         try {
             for(Pez pez : PezDAO.obtenerDatos()) {
-                lista = lista + pez.toString() + "\n";
+                lista = lista + pez.toString() + "\n"; Terminar despues
             }
             jTextAreaVisor.append(lista);
         }catch (Exception ev) {
             //error
-        }
+        }*/ 
     }//GEN-LAST:event_jButtonListarActionPerformed
 
     private void jButtonBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonBuscarActionPerformed
@@ -332,15 +332,15 @@ public class Mantenedores extends javax.swing.JFrame {
         
         try {
             //Método 1
-            /*if(!IDPez.equals("")){
+            if(!IDPez.equals("")){
                 if(jRadioButtonTropical.isSelected()==true){
-                    Pez pez = PezDAO.buscarPezTropical(IDPez);
+                    Pez pez = PezDAO.buscar(IDPez);
                     if(pez != null){
                         limpiar();
                         jTextAreaVisor.setText("ID: "+pez.getIdPez()+"\n"+
                                 "Especie: "+pez.getEspecie()+"\n"+
-                                "Precio: "+Integer.toString(pez.getPrecio())+"\n"+
                                 "Color: "+((PezTropical) pez).getColor()+"\n"+
+                                "Precio: "+Integer.toString(pez.getPrecio())+"\n"+
                                 "Stock: "+Integer.toString(pez.getStock()));
                     }else{
                         JOptionPane.showMessageDialog(rootPane,"Error, ID no encontrada");
@@ -348,13 +348,13 @@ public class Mantenedores extends javax.swing.JFrame {
                 }
                 
                 if(jRadioButtonDorado.isSelected()==true){
-                    Pez pez = PezDAO.buscarPezDorado(IDPez);
+                    Pez pez = PezDAO.buscar(IDPez);
                     if(pez != null){
                         limpiar();
                         jTextAreaVisor.setText("ID: "+pez.getIdPez()+"\n"+
                                 "Especie: "+pez.getEspecie()+"\n"+
-                                "Precio: "+Integer.toString(pez.getPrecio())+"\n"+
                                 "Tamaño (cm): "+Integer.toString(((PezDorado) pez).getTamaño())+"\n"+
+                                "Precio: "+Integer.toString(pez.getPrecio())+"\n"+
                                 "Stock: "+Integer.toString(pez.getStock()));
                     }else{
                         JOptionPane.showMessageDialog(rootPane,"Error, ID no encontrada");
@@ -362,13 +362,13 @@ public class Mantenedores extends javax.swing.JFrame {
                 }
                 
                 if(jRadioButtonKoi.isSelected()==true){
-                    Pez pez = PezDAO.buscarPezKoi(IDPez);
+                    Pez pez = PezDAO.buscar(IDPez);
                     if(pez != null){
                         limpiar();
                         jTextAreaVisor.setText("ID: "+pez.getIdPez()+"\n"+
                                 "Especie: "+pez.getEspecie()+"\n"+
-                                "Precio: "+Integer.toString(pez.getPrecio())+"\n"+
                                 "Edad: "+Integer.toString(((PezKoi) pez).getEdad())+"\n"+
+                                "Precio: "+Integer.toString(pez.getPrecio())+"\n"+
                                 "Stock: "+Integer.toString(pez.getStock()));
                     }else{
                         JOptionPane.showMessageDialog(rootPane,"Error, ID no encontrada");
@@ -376,10 +376,10 @@ public class Mantenedores extends javax.swing.JFrame {
                 }
             }else{
                 JOptionPane.showMessageDialog(rootPane, "Error, debe ingresar una ID");
-            } */
+            } 
             
             //Método 2
-            Pez pez = PezDAO.buscar(IDPez);
+            /*Pez pez = PezDAO.buscar(IDPez);
             
             if (pez != null){
                 jTextFieldPrecio.setText(Integer.toString(pez.getPrecio()));
@@ -399,7 +399,7 @@ public class Mantenedores extends javax.swing.JFrame {
                 
             } else {
                 JOptionPane.showMessageDialog(rootPane, "Error, ID no encontrada");
-            }
+            }*/
         }catch (Exception ev){
             //error
         }
@@ -427,6 +427,7 @@ public class Mantenedores extends javax.swing.JFrame {
     private void jButtonLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonLimpiarActionPerformed
         // TODO add your handling code here:
         limpiar();
+        jTextAreaVisor.setText("");
     }//GEN-LAST:event_jButtonLimpiarActionPerformed
 
     private void jRadioButtonTropicalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButtonTropicalActionPerformed
@@ -446,7 +447,7 @@ public class Mantenedores extends javax.swing.JFrame {
 
     private void jButtonModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonModificarActionPerformed
         // TODO add your handling code here:
-        String idPez, color ="";
+        String idPez, color,urlImg ="";
         int precio,stock,atributo;
         
         try{
@@ -458,7 +459,7 @@ public class Mantenedores extends javax.swing.JFrame {
                 if(jRadioButtonTropical.isSelected()==true){
                     String especie="Tropical";
                     color = jTextFieldAtributo.getText();
-                    Pez pez = new PezTropical(idPez,especie,color,precio,stock);
+                    Pez pez = new PezTropical(idPez,color,especie,precio,stock,urlImg);
                     
                     if(PezDAO.modificar(pez) == true){
                     JOptionPane.showMessageDialog(rootPane, "Datos agregados exitosamente");
@@ -470,7 +471,7 @@ public class Mantenedores extends javax.swing.JFrame {
                 if(jRadioButtonDorado.isSelected()==true){
                     String especie="Dorado";
                     atributo = Integer.parseInt(jTextFieldAtributo.getText());
-                    Pez pez = new PezDorado(idPez,especie,precio,atributo,stock);
+                    Pez pez = new PezDorado(idPez,especie,precio,atributo,stock,urlImg);
                     
                     if(PezDAO.modificar(pez) == true){
                         JOptionPane.showMessageDialog(rootPane, "Datos agregados exitosamente");
@@ -482,7 +483,7 @@ public class Mantenedores extends javax.swing.JFrame {
                 if(jRadioButtonKoi.isSelected()==true){
                     String especie="Koi";
                     atributo = Integer.parseInt(jTextFieldAtributo.getText());
-                    Pez pez = new PezKoi(idPez,especie,precio,atributo,stock);
+                    Pez pez = new PezKoi(idPez,especie,precio,atributo,stock,urlImg);
                     
                     if(PezDAO.modificar(pez) == true){
                         JOptionPane.showMessageDialog(rootPane, "Datos agregados exitosamente");
