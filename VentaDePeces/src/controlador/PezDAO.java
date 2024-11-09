@@ -136,6 +136,7 @@ public class PezDAO {
             String color = null;
             Integer tamaño = null;
             Integer edad = null;
+            
             if (pez instanceof PezKoi) {
                 PezKoi pezKoi = (PezKoi) pez;
                 edad = pezKoi.getEdad(); // atributo de PezKoi
@@ -161,7 +162,6 @@ public class PezDAO {
             } else {
                 pst.setNull(3, java.sql.Types.INTEGER);
             }
-            
             pst.setString(4, pez.getEspecie());
             pst.setInt(5, pez.getPrecio());
             pst.setInt(6, pez.getStock());
@@ -176,6 +176,120 @@ public class PezDAO {
         }
         return estado;
     }
+    
+    
+    public static ArrayList<Pez> obtenerDatos() throws Exception {
+        ArrayList<Pez> a1Pez = new ArrayList<>();
+        String query = "SELECT * FROM productos";
+
+        try (Connection con = new AbrirBaseDeDatos().conectar("tienda_peces");
+            PreparedStatement pst = con.prepareStatement(query);
+            ResultSet rs = pst.executeQuery()) {
+           
+            while (rs.next()) {
+                String especie = rs.getString("especie");
+                Pez pez = null;
+                
+                if("Tropical".equals(especie)){
+                    pez = new PezTropical(
+                            rs.getString("id_producto"),
+                            rs.getString("color"),
+                            rs.getString("especie"),
+                            rs.getInt("precio"),
+                            rs.getInt("stock"),
+                            rs.getString("img")
+                        );
+                }
+                else if("Pez Dorado".equals(especie)){
+                    pez = new PezDorado(
+                            rs.getString("id_producto"),
+                            rs.getString("especie"),
+                            rs.getInt("precio"),
+                            rs.getInt("tamaño"),
+                            rs.getInt("stock"),
+                            rs.getString("img")
+                        
+                        );
+                }
+                else{
+                    pez = new PezKoi(
+                            rs.getString("id_producto"),
+                            rs.getString("especie"),
+                            rs.getInt("precio"),
+                            rs.getInt("edad"),
+                            rs.getInt("stock"),
+                            rs.getString("img")
+                    );
+                }
+                a1Pez.add(pez);
+                
+            }
+
+        } catch (SQLException sqle) {
+            System.out.println("Error al obtener datos de Pez: " + sqle.getMessage());
+        }
+        return a1Pez;
+    }
+    
+    
+    
+    public static ArrayList<Pez> obtenerDatosPorEspecie(String Especie) throws Exception {
+        ArrayList<Pez> alPez = new ArrayList<>();
+        String query = "SELECT * FROM productos WHERE especie = ?";
+
+        try (Connection con = new AbrirBaseDeDatos().conectar("tienda_peces");
+             PreparedStatement pst = con.prepareStatement(query)) {
+
+            pst.setString(1, Especie);
+            try (ResultSet rs = pst.executeQuery()) {
+                while (rs.next()) {
+                    String especie = rs.getString("especie");
+                    Pez pez = null;
+                
+                    if("Tropical".equals(especie)){
+                        pez = new PezTropical(
+                                rs.getString("id_producto"),
+                                rs.getString("color"),
+                                rs.getString("especie"),
+                                rs.getInt("precio"),
+                                rs.getInt("stock"),
+                                rs.getString("img")
+                            );
+                    }
+                    
+                    else if("Pez Dorado".equals(especie)){
+                        pez = new PezDorado(
+                            rs.getString("id_producto"),
+                            rs.getString("especie"),
+                            rs.getInt("precio"),
+                            rs.getInt("tamaño"),
+                            rs.getInt("stock"),
+                            rs.getString("img")
+                        
+                        );
+                    }
+                    else{
+                    pez = new PezKoi(
+                            rs.getString("id_producto"),
+                            rs.getString("especie"),
+                            rs.getInt("precio"),
+                            rs.getInt("edad"),
+                            rs.getInt("stock"),
+                            rs.getString("img")
+                        );
+                    }
+               
+                    alPez.add(pez);
+                }
+                
+            }
+
+        } catch (SQLException sqle) {
+            System.out.println("Error al obtener datos por jornada: " + sqle.getMessage());
+        }
+        return alPez;
+    }
+    
 
 
     

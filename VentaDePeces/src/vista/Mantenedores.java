@@ -6,6 +6,7 @@
 package vista;
 
 import controlador.PezDAO;
+import java.util.ArrayList;
 import modelo.*;
 import javax.swing.JOptionPane;
 /**
@@ -64,7 +65,6 @@ public class Mantenedores extends javax.swing.JFrame {
         jLabel3.setText("Especie:");
 
         buttonGroupEspecie.add(jRadioButtonTropical);
-        jRadioButtonTropical.setSelected(true);
         jRadioButtonTropical.setText("Pez Tropical");
         jRadioButtonTropical.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -276,7 +276,7 @@ public class Mantenedores extends javax.swing.JFrame {
                 }
                 
                 if(jRadioButtonDorado.isSelected()==true){
-                    String especie="Dorado";
+                    String especie="Pez Dorado";
                     atributo = Integer.parseInt(jTextFieldAtributo.getText());
                     Pez pez = new PezDorado(idPez,especie,precio,atributo,stock,urlImg);
                     
@@ -288,7 +288,7 @@ public class Mantenedores extends javax.swing.JFrame {
                 }
                 
                 if(jRadioButtonKoi.isSelected()==true){
-                    String especie="Koi";
+                    String especie="Pez Koi";
                     atributo = Integer.parseInt(jTextFieldAtributo.getText());
                     Pez pez = new PezKoi(idPez,especie,precio,atributo,stock,urlImg);
                     
@@ -311,98 +311,112 @@ public class Mantenedores extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonAgregarActionPerformed
 
     private void jButtonListarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonListarActionPerformed
-        // TODO add your handling code here:
+        // Metodo para listar por especie seleccionada
+        limpiar();
+        jTextAreaVisor.setText("");
+        if(jRadioButtonTropical.isSelected()==true){
+            
+            try {
+            ArrayList<Pez> pecesTropicales = PezDAO.obtenerDatosPorEspecie("Tropical");
+
+                if (!pecesTropicales.isEmpty()) {
+                    for (Pez pez1 : pecesTropicales) {
+                        jTextAreaVisor.append(pez1.toString()+ "\n");
+                    }
+                }
+
+            } catch (Exception e) {
+            System.out.println("Ocurrió un error: " + e.getMessage());
+            }
+                    
+        }
         
+        else if(jRadioButtonDorado.isSelected()==true){
+            
+            try {
+            ArrayList<Pez> pecesDorados = PezDAO.obtenerDatosPorEspecie("Pez Dorado");
+
+                if (!pecesDorados.isEmpty()) {
+                    for (Pez pez1 : pecesDorados) {
+                        jTextAreaVisor.append(pez1.toString()+ "\n");
+                    }
+                }
+
+            } catch (Exception e) {
+            System.out.println("Ocurrió un error: " + e.getMessage());
+            }   
+            
+        }
+        else if(jRadioButtonKoi.isSelected()==true){
+           
+            try {
+            ArrayList<Pez> pecesKoi = PezDAO.obtenerDatosPorEspecie("Pez Koi");
+
+                if (!pecesKoi.isEmpty()) {
+                    for (Pez pez1 : pecesKoi) {
+                        jTextAreaVisor.append(pez1.toString()+ "\n");
+                    }
+                }
+
+            } catch (Exception e) {
+            System.out.println("Ocurrió un error: " + e.getMessage());
+            }
+        
+        }
+        // Listar normal, lista todos los productos de la base.
         /*String lista = "";
         jTextAreaVisor.setText("");
         try {
             for(Pez pez : PezDAO.obtenerDatos()) {
-                lista = lista + pez.toString() + "\n"; Terminar despues
+                lista = lista + pez.toString() + "\n";
             }
             jTextAreaVisor.append(lista);
         }catch (Exception ev) {
             //error
-        }*/ 
+        }
+        */
     }//GEN-LAST:event_jButtonListarActionPerformed
 
     private void jButtonBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonBuscarActionPerformed
-        // TODO add your handling code here:
+ 
         String IDPez = "";
         IDPez = jTextFieldID.getText();
-        
+
         try {
-            //Método 1
-            if(!IDPez.equals("")){
-                if(jRadioButtonTropical.isSelected()==true){
-                    Pez pez = PezDAO.buscar(IDPez);
-                    if(pez != null){
-                        limpiar();
-                        jTextAreaVisor.setText("ID: "+pez.getIdPez()+"\n"+
-                                "Especie: "+pez.getEspecie()+"\n"+
-                                "Color: "+((PezTropical) pez).getColor()+"\n"+
-                                "Precio: "+Integer.toString(pez.getPrecio())+"\n"+
-                                "Stock: "+Integer.toString(pez.getStock()));
-                    }else{
-                        JOptionPane.showMessageDialog(rootPane,"Error, ID no encontrada");
-                    }
-                }
-                
-                if(jRadioButtonDorado.isSelected()==true){
-                    Pez pez = PezDAO.buscar(IDPez);
-                    if(pez != null){
-                        limpiar();
-                        jTextAreaVisor.setText("ID: "+pez.getIdPez()+"\n"+
-                                "Especie: "+pez.getEspecie()+"\n"+
-                                "Tamaño (cm): "+Integer.toString(((PezDorado) pez).getTamaño())+"\n"+
-                                "Precio: "+Integer.toString(pez.getPrecio())+"\n"+
-                                "Stock: "+Integer.toString(pez.getStock()));
-                    }else{
-                        JOptionPane.showMessageDialog(rootPane,"Error, ID no encontrada");
-                    }
-                }
-                
-                if(jRadioButtonKoi.isSelected()==true){
-                    Pez pez = PezDAO.buscar(IDPez);
-                    if(pez != null){
-                        limpiar();
-                        jTextAreaVisor.setText("ID: "+pez.getIdPez()+"\n"+
-                                "Especie: "+pez.getEspecie()+"\n"+
-                                "Edad: "+Integer.toString(((PezKoi) pez).getEdad())+"\n"+
-                                "Precio: "+Integer.toString(pez.getPrecio())+"\n"+
-                                "Stock: "+Integer.toString(pez.getStock()));
-                    }else{
-                        JOptionPane.showMessageDialog(rootPane,"Error, ID no encontrada");
-                    }
-                }
-            }else{
-                JOptionPane.showMessageDialog(rootPane, "Error, debe ingresar una ID");
-            } 
             
-            //Método 2
-            /*Pez pez = PezDAO.buscar(IDPez);
-            
-            if (pez != null){
-                jTextFieldPrecio.setText(Integer.toString(pez.getPrecio()));
-                jTextFieldStock.setText(Integer.toString(pez.getStock()));
-                
-                if(pez.getEspecie().equals("Tropical")){
-                    jRadioButtonTropical.setSelected(true);
-                    jTextFieldAtributo.setText(((PezTropical) pez).getColor());
-                }else if(pez.getEspecie().equals("Dorado")){
-                    jRadioButtonDorado.setSelected(true);
-                    jTextFieldAtributo.setText(Integer.toString(((PezDorado) pez).getTamaño()));
-                }else{
-                    jRadioButtonKoi.setSelected(true);
-                    jTextFieldAtributo.setText(Integer.toString(((PezKoi) pez).getEdad()));
+            if (!IDPez.equals("")) {
+                Pez pez = PezDAO.buscar(IDPez);  
+                if (pez != null) {
+                    limpiar(); 
+
+                   
+                    String info = "ID: " + pez.getIdPez() + "\n" +
+                                  "Especie: " + pez.getEspecie() + "\n" +
+                                  "Precio: " + pez.getPrecio() + "\n" +
+                                  "Stock: " + pez.getStock() + "\n";
+
+                    
+                    if (pez instanceof PezTropical) {
+                        info += "Color: " + ((PezTropical) pez).getColor() + "\n";
+                    } else if (pez instanceof PezDorado) {
+                        info += "Tamaño (cm): " + ((PezDorado) pez).getTamaño() + "\n";
+                    } else if (pez instanceof PezKoi) {
+                        info += "Edad: " + ((PezKoi) pez).getEdad() + "\n";
+                    }
+
+                   
+                    jTextAreaVisor.setText(info);
+                } else {
+                    JOptionPane.showMessageDialog(rootPane, "Error, ID no encontrada");
                 }
-                
-                
             } else {
-                JOptionPane.showMessageDialog(rootPane, "Error, ID no encontrada");
-            }*/
-        }catch (Exception ev){
-            //error
+                JOptionPane.showMessageDialog(rootPane, "Error, debe ingresar una ID");
+            }
+
+        } catch (Exception ev) {
+            JOptionPane.showMessageDialog(rootPane, "Error al procesar la información");
         }
+
     }//GEN-LAST:event_jButtonBuscarActionPerformed
 
     private void jButtonEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonEliminarActionPerformed
@@ -506,7 +520,7 @@ public class Mantenedores extends javax.swing.JFrame {
 
     private void limpiar(){
         jTextFieldID.setText("");
-        jRadioButtonTropical.setSelected(true);
+        jRadioButtonTropical.setSelected(false);
         jTextFieldAtributo.setText("");
         jTextFieldPrecio.setText("");
         jTextFieldStock.setText("");;

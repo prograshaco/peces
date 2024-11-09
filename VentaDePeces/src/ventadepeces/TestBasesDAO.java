@@ -10,6 +10,8 @@ import modelo.PezDorado;
 import modelo.PezKoi;
 import modelo.Pez;
 import controlador.PezDAO;
+import java.util.ArrayList;
+
 /**
  *
  * @author jassa
@@ -64,7 +66,7 @@ public class TestBasesDAO {
         try {
             boolean eliminado = PezDAO.eliminar("aa08");
             if (eliminado) {
-                System.out.println("Eliminación exitosa.");
+                System.out.println("Eliminacion exitosa.");
             } else {
                 System.out.println("No se pudo eliminar el pez.");
             }
@@ -79,7 +81,7 @@ public class TestBasesDAO {
         // Crea una instancia de PezKoi con los datos actualizados
         PezKoi pezKoi = new PezKoi("ac06","Pez Koi", 16500, 15,100,"urlfalsaParaKoi");
 
-        // Llama al método modificar, pasando el pez que deseas actualizar
+        // Llamar al metodo modificar, pasando el pez que deseas actualizar
         try {
             boolean resultado = PezDAO.modificar(pezKoi);
             if (resultado) {
@@ -93,9 +95,25 @@ public class TestBasesDAO {
         }
         
         
+        
+        try {
+            ArrayList<Pez> pecesTropicales = PezDAO.obtenerDatosPorEspecie("Tropical");
+
+            if (!pecesTropicales.isEmpty()) {
+                for (Pez pez1 : pecesTropicales) {
+                    System.out.println(pez1);
+                }
+            } else {
+                System.out.println("No se encontraron peces de la especie 'Tropical'.");
+            }
+
+        } catch (Exception e) {
+            System.out.println("Ocurrió un error: " + e.getMessage());
+        }
 
 
         
+
         
     }
     
